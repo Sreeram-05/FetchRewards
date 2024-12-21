@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Fetch Rewards</string>
+    <string name="empty_item">Empty Item</string>
+    <string name="null_item">Null Item</string>
+    <string name="no_items_found">No Items Found</string>
+    <string name="content_desc_back">Back</string>
+    <string name="display_all_items_by_list_id">Display All Items by List ID</string>
+    <string name="filtered_or_final_items">Filtered Or Final Items</string>
+    <string name="sorted_items">Sorted Items</string>
+    <string name="filter_items_or_final_list">Filter Items or Final List</string>
+    <string name="sort_results">Sort Results</string>
+    <string name="display_all_items">Display All Items</string>
+</resources>
