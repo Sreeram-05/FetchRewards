@@ -15,8 +15,11 @@ fun AppHost() {
     ) {
         composable("splash") { SplashScreen(navController) }
         composable("mainScreen") { MainScreen(navController) }
-        composable("displayAllItemsScreen") { AllItemsScreen(navController) }
         composable("sortTheResultsScreen") { SortedItemsScreen(navController) }
         composable("filterOutAnyItemsScreen") { FilteredItemsScreen(navController) }
+        composable("list/{listId}") { backStackEntry ->
+            val listId = backStackEntry.arguments?.getString("listId")?.toInt()
+            ListDetailScreen(listId = listId, navController)
+        }
     }
 }

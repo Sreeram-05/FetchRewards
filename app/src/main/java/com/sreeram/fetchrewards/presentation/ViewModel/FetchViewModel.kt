@@ -3,6 +3,7 @@ package com.sreeram.fetchrewards.presentation.ViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sreeram.fetchrewards.data.model.Item
+import com.sreeram.fetchrewards.domain.repository.FetchRepository
 import com.sreeram.fetchrewards.domain.usecase.DisplayAllItemsUseCase
 import com.sreeram.fetchrewards.domain.usecase.DisplayFilteredListUseCase
 import com.sreeram.fetchrewards.domain.usecase.SortTheResultsUseCase
@@ -18,10 +19,6 @@ class FetchViewModel @Inject constructor(
     private val sortTheResultsUseCase: SortTheResultsUseCase,
     private val displayFilteredListUseCase: DisplayFilteredListUseCase
 ) : ViewModel() {
-
-    private val _displayItemsByListID = MutableStateFlow<Map<Int?, List<Item>>>(emptyMap())
-    val displayItemsByListID: StateFlow<Map<Int?, List<Item>>> = _displayItemsByListID
-
     private val _sortTheResults = MutableStateFlow<Map<Int?, List<Item>>>(emptyMap())
     val sortTheResults: StateFlow<Map<Int?, List<Item>>> = _sortTheResults
 
@@ -34,15 +31,30 @@ class FetchViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    private val _items = MutableStateFlow<List<Item>>(emptyList())
+    val items: StateFlow<List<Item>> = _items
+
     init {
         fetchItems()
+//        fetdchItems()
+    }
+
+    private fun fetdchItems() {
+        viewModelScope.launch {
+            try {
+                _items.value = displayAllItemsUseCase.get()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _items.value = emptyList() // Set empty list on failure
+            }
+        }
     }
 
     private fun fetchItems() {
         viewModelScope.launch {
             _loading.value = true
             try {
-                _displayItemsByListID.value = displayAllItemsUseCase.invoke()
+                _items.value = displayAllItemsUseCase.get()
                 _sortTheResults.value = sortTheResultsUseCase.invoke()
                 _filterTheResults.value = displayFilteredListUseCase.invoke()
                 _error.value = null

@@ -3,8 +3,10 @@ package com.sreeram.fetchrewards.presentation.composables
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -59,7 +62,6 @@ fun FilteredItemsScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(20.dp)
                 .padding(padding),
             contentAlignment = Alignment.Center
         ) {
@@ -78,7 +80,10 @@ fun FilteredItemsScreen(
 @Composable
 fun FilteredItemsCard(items: Map<Int?, List<Item>>) {
     // Sort items by listId and then by name within each list
-    LazyColumn {
+    LazyColumn(
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         items(items.entries.sortedBy { it.key }) { (listId, itemList) ->
             // Display header for each listId
             ListHeader(listId = listId)
@@ -89,18 +94,6 @@ fun FilteredItemsCard(items: Map<Int?, List<Item>>) {
                     ItemCard(item)
                 }
         }
-    }
-}
-
-
-@Composable
-fun ErrorText(error: String?) {
-    error?.let {
-        Text(
-            "Error: $it",
-            color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.bodyLarge
-        )
     }
 }
 
@@ -125,14 +118,12 @@ fun ItemList(items: Map<Int?, List<Item>>) {
 @Composable
 fun ListHeader(listId: Int?) {
     Text(
+        fontWeight = FontWeight.Bold,
         text = "List ID: $listId",
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     )
-    HorizontalDivider(
-        thickness = 1.dp,
-        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
-    )
+    Spacer(modifier = Modifier.height(12.dp))
 }

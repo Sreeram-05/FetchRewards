@@ -7,8 +7,12 @@ import javax.inject.Inject
 class DisplayAllItemsUseCase @Inject constructor(
     private val repository: FetchRepositoryImpl
 ) {
-    suspend operator fun invoke(): Map<Int?, List<Item>> {
-        return repository.fetchItems()
-            .groupBy { it.listId } // Group by listId
+    suspend fun get(): List<Item> {
+        return try {
+            repository.fetchItems()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList() // Return empty list on error
+        }
     }
 }
