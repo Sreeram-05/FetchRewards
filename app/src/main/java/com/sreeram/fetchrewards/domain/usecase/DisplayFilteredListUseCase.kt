@@ -11,11 +11,10 @@ class DisplayFilteredListUseCase @Inject constructor(
         // Fetch the items from the repository
         return listOf(1, 2, 3, 4)
             .mapNotNull { listId ->
-                // Filter out items where the name is null or blank, then group by listId
                 repository.fetchItems()
-                    .filter { !it.name.isNullOrBlank() } // Filter out null or blank names
+                    .filter { !it.name.isNullOrBlank() }
                     .groupBy { it.listId }[listId]
-                    ?.sortedBy { it.name } // Sort by name within each listId
+                    ?.sortedBy { it.name }
                     ?.let { listId to it }
             }
             .toMap()

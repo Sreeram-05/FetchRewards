@@ -32,7 +32,7 @@ import com.sreeram.fetchrewards.presentation.ViewModel.FetchViewModel
 fun ListDetailScreen(
     listId: Int?, navController: NavHostController, viewModel: FetchViewModel = hiltViewModel()
 ) {
-    val items by viewModel.items.collectAsState()
+    val items by viewModel.listedItems.collectAsState()
     val loading by viewModel.loading.collectAsState()
     val filteredItems = items.filter { it.listId == listId }
 

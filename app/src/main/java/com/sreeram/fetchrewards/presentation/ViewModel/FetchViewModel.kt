@@ -3,7 +3,6 @@ package com.sreeram.fetchrewards.presentation.ViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sreeram.fetchrewards.data.model.Item
-import com.sreeram.fetchrewards.domain.repository.FetchRepository
 import com.sreeram.fetchrewards.domain.usecase.DisplayAllItemsUseCase
 import com.sreeram.fetchrewards.domain.usecase.DisplayFilteredListUseCase
 import com.sreeram.fetchrewards.domain.usecase.SortTheResultsUseCase
@@ -31,30 +30,18 @@ class FetchViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    private val _items = MutableStateFlow<List<Item>>(emptyList())
-    val items: StateFlow<List<Item>> = _items
+    private val _listedItems = MutableStateFlow<List<Item>>(emptyList())
+    val listedItems: StateFlow<List<Item>> = _listedItems
 
     init {
         fetchItems()
-//        fetdchItems()
-    }
-
-    private fun fetdchItems() {
-        viewModelScope.launch {
-            try {
-                _items.value = displayAllItemsUseCase.get()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _items.value = emptyList() // Set empty list on failure
-            }
-        }
     }
 
     private fun fetchItems() {
         viewModelScope.launch {
             _loading.value = true
             try {
-                _items.value = displayAllItemsUseCase.get()
+                _listedItems.value = displayAllItemsUseCase.get()
                 _sortTheResults.value = sortTheResultsUseCase.invoke()
                 _filterTheResults.value = displayFilteredListUseCase.invoke()
                 _error.value = null
